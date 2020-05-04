@@ -1,0 +1,29 @@
+{
+  "name": "car-repair-shop",
+  "version": "1.0.0",
+  "description": "Node.js app for car repair shop with Mongo underneath",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nazakato/car-repair-shop.git"
+  },
+  "keywords": [
+    "server",
+    "car",
+    "repair",
+    "shop",
+    "express"
+  ],
+  "author": "Ivan Kupriianov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nazakato/car-repair-shop/issues"
+  },
+  "homepage": "https://github.com/Nazakato/car-repair-shop#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
