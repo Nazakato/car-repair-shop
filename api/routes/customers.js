@@ -1,10 +1,11 @@
 const express = require('express');
-const router = express.Router();
 const mongoose = require('mongoose');
-
 const Customer = require('../models/customer');
+
 const customerSelector = 'name type description _id';
-const endpointUrl = 'http://localhost:4200/customers/';
+const endpointUrl = process.env.CURRENT_DOMAIN_URL + 'customers/';
+
+const router = express.Router();
 
 function docToApiResponseModel(doc) {
     return {
@@ -14,7 +15,6 @@ function docToApiResponseModel(doc) {
         type: doc.type
     };
 }
-
 router.get('/', (req, res, next) => {
     Customer.find()
         .select(customerSelector)
