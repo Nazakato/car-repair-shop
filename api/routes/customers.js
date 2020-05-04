@@ -15,8 +15,14 @@ router.get('/:customerId', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
+    const createdCustomer = {
+        name: req.body.name,
+        type: req.body.type,
+        description: req.body.description
+    }
     res.status(201).json({
-        message: 'handle post to /customers'
+        message: 'handle post to /customers',
+        createdCustomer: createdCustomer
     });
 });
 
