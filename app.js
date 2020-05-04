@@ -1,11 +1,16 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const app = express();
 
 const customerRoutes = require('./api/routes/customers');
 const serviceRoutes = require('./api/routes/services');
 const orderRoutes = require('./api/routes/orders');
+
+mongoose.connect('mongodb+srv://nazakato:' + process.env.MONGO_ATLAS_Pass + '@nazakato-mongo-cluster-7w2tt.gcp.mongodb.net/test?retryWrites=true&w=majority', () => {
+    useMongoClient: true
+});
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }))
