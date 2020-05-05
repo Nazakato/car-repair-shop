@@ -46,18 +46,17 @@ router.get('/:customerId', (req, res, next) => {
         .select(customerSelector)
         .exec()
         .then(doc => {
-            if (doc) {
-                const response = {
-                    customer: docToApiResponseModel(doc),
-                    request: {
-                        type: 'GET',
-                        url: endpointUrl
-                    }
-                };
-                res.status(200).json(response);
-            } else {
+            if (!doc) {
                 res.status(404).json({ message: 'Customer with id ' + id + ' was not found.' });
             }
+            const response = {
+                customer: docToApiResponseModel(doc),
+                request: {
+                    type: 'GET',
+                    url: endpointUrl
+                }
+            };
+            res.status(200).json(response);
         })
         .catch(err => {
             res.status(500).json({ error: err.message });
