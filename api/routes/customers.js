@@ -13,6 +13,7 @@ function docToApiResponseModel(doc) {
         name: doc.name,
         description: doc.description,
         type: doc.type
+
     };
 }
 router.get('/', (req, res, next) => {
@@ -35,7 +36,6 @@ router.get('/', (req, res, next) => {
             res.status(200).json(response);
         })
         .catch(err => {
-            console.log(err);
             res.status(500).json({ error: err.message });
         });
 });
@@ -113,7 +113,6 @@ router.patch('/:customerId', (req, res, next) => {
             }
         })
         .catch(err => {
-            console.log(err);
             res.status(500).json({ error: err.message });
         });
 });
@@ -126,7 +125,6 @@ router.delete('/:customerId', (req, res, next) => {
             res.status(200).json(result);
         })
         .catch(err => {
-            console.log(err);
             res.status(500).json({ error: err.message });
         });
 });
