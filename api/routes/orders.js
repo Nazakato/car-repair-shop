@@ -25,6 +25,8 @@ function docToApiResponseModel(doc) {
 router.get('/', (req, res, next) => {
     Order.find()
         .select(ordersSelector)
+        .populate('services', '_id name prices')
+        .populate('customer', '_id name type')
         .exec()
         .then(docs => {
             const response = {
@@ -50,6 +52,8 @@ router.get('/:orderId', (req, res, next) => {
     const id = req.params.orderId;
     Order.findById(id)
         .select(ordersSelector)
+        .populate('services', '_id name prices')
+        .populate('customer', '_id name type')
         .exec()
         .then(doc => {
             if (!doc) {
