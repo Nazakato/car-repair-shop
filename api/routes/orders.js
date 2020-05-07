@@ -4,7 +4,29 @@ const Order = require('../models/order');
 const Customer = require('../models/customer');
 const Service = require('../models/service');
 
-const ordersSelector = '_id createdDate modifiedDate comment serviceIds customerId';
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now().toString() + '_' + file.originalname);
+    }
+});
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'application/x-msdownload' || file.mimetype === 'text/javascript') {
+        cb(new Error('Dangerous file type.'), false);
+    } else {
+        cb(null, true);
+    }
+}
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 1024 * 1024 * 10 },
+    fileFilter: fileFilter
+});
+
+const ordersSelector = '_id createdDate modifiedDate comment serviceIds customerId attachment';
 const endpointUrl = process.env.CURRENT_DOMAIN_URL + 'orders/';
 
 const router = express.Router();
@@ -16,6 +38,7 @@ function docToApiResponseModel(doc) {
         services: doc.services,
         customer: doc.customer,
         type: doc.type,
+        attachment: doc.attachment,
         total: doc.total,
         createdDate: doc.createdDate,
         modifiedDate: doc.modifiedDate
@@ -73,7 +96,7 @@ router.get('/:orderId', (req, res, next) => {
         });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', upload.single('orderAttachment'), (req, res, next) => {
     Customer.exists({_id: req.body.customer})
         .then(customerExist => {
             if (!customerExist) {
@@ -98,6 +121,7 @@ router.post('/', (req, res, next) => {
                 customer : req.body.customer,
                 services : req.body.services,
                 comment : req.body.comment,
+                attachment: req.file.path,
                 total: 0
             });
 
