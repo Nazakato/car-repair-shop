@@ -7,7 +7,7 @@ const orderSchema = mongoose.Schema({
     comment: { type: String, default: '' },
     services: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Service', required: true }],
     customer: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer', required: true },
-    attachment: { type: String, default: ''},
+    attachment: { type: String, default: '' },
     total: { type: Number, default: 0 }
 });
 
