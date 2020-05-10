@@ -2,6 +2,7 @@
   "env": {
     "CURRENT_DOMAIN_URL": "http://localhost:4200/",
     "PORT": 4200,
-    "MONGO_ATLAS_Pass": "fakePass"
+    "MONGO_ATLAS_Pass": "fakePass",
+    "JWT_KEY": "secret_key"
   }
 }
