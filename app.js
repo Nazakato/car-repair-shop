@@ -7,6 +7,7 @@ const app = express();
 const customerRoutes = require('./api/routes/customers');
 const serviceRoutes = require('./api/routes/services');
 const orderRoutes = require('./api/routes/orders');
+const userRoutes = require('./api/routes/users');
 
 mongoose.connect('mongodb+srv://nazakato:' + process.env.MONGO_ATLAS_Pass + '@nazakato-mongo-cluster-7w2tt.gcp.mongodb.net/test?retryWrites=true&w=majority', () => {
   useMongoClient: true
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
 app.use('/customers', customerRoutes);
 app.use('/services', serviceRoutes);
 app.use('/orders', orderRoutes);
+app.use('/users', userRoutes);
 
 app.use((req, res, next) => {
   const error = new Error('Not Found');
