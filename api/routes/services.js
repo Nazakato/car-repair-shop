@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Service = require('../models/service');
+const checkAuth = require('../middlewares/check-auth');
 
 const servicesSelector = 'name description prices _id';
 const endpointUrl = process.env.CURRENT_DOMAIN_URL + 'services/';
@@ -64,7 +65,7 @@ router.get('/:serviceId', (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
   const service = new Service({
     _id: mongoose.Types.ObjectId(),
     name: req.body.name,
@@ -89,7 +90,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
-router.delete('/:serviceId', (req, res, next) => {
+router.delete('/:serviceId', checkAuth, (req, res, next) => {
   const id = req.params.serviceId;
   Service.remove({ _id: id })
     .exec()
@@ -106,7 +107,7 @@ router.delete('/:serviceId', (req, res, next) => {
     });
 });
 
-router.post('/:serviceId/updatePrice', (req, res, next) => {
+router.post('/:serviceId/updatePrice', checkAuth, (req, res, next) => {
   const id = req.params.serviceId;
 
   Service.findById(id)

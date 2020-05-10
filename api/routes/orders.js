@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Order = require('../models/order');
 const Customer = require('../models/customer');
 const Service = require('../models/service');
+const checkAuth = require('../middlewares/check-auth');
 
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -45,7 +46,7 @@ function docToApiResponseModel(doc) {
     };
 }
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, (req, res, next) => {
     Order.find()
         .select(ordersSelector)
         .populate('services', '_id name prices')
@@ -71,7 +72,7 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.get('/:orderId', (req, res, next) => {
+router.get('/:orderId', checkAuth, (req, res, next) => {
     const id = req.params.orderId;
     Order.findById(id)
         .select(ordersSelector)
@@ -96,7 +97,7 @@ router.get('/:orderId', (req, res, next) => {
         });
 });
 
-router.post('/', upload.single('orderAttachment'), (req, res, next) => {
+router.post('/', checkAuth, upload.single('orderAttachment'), (req, res, next) => {
     Customer.exists({_id: req.body.customer})
         .then(customerExist => {
             if (!customerExist) {
@@ -142,7 +143,7 @@ router.post('/', upload.single('orderAttachment'), (req, res, next) => {
         });
 });
 
-router.patch('/:orderId', (req, res, next) => {
+router.patch('/:orderId', checkAuth, (req, res, next) => {
     const id = req.params.orderId;
     const updateOrders = {};
     for (const option of req.body) {
@@ -209,7 +210,7 @@ router.patch('/:orderId', (req, res, next) => {
         });
 });
 
-router.delete('/:orderId', (req, res, next) => {
+router.delete('/:orderId', checkAuth, (req, res, next) => {
     const id = req.params.orderId;
     Order.remove({ _id: id })
         .exec()

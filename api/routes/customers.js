@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Customer = require('../models/customer');
+const checkAuth = require('../middlewares/check-auth');
 
 const customerSelector = 'name type description _id';
 const endpointUrl = process.env.CURRENT_DOMAIN_URL + 'customers/';
@@ -16,7 +17,7 @@ function docToApiResponseModel(doc) {
 
   };
 }
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, (req, res, next) => {
   Customer.find()
     .select(customerSelector)
     .exec()
@@ -40,7 +41,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.get('/:customerId', (req, res, next) => {
+router.get('/:customerId', checkAuth, (req, res, next) => {
   const id = req.params.customerId;
   Customer.findById(id)
     .select(customerSelector)
@@ -63,7 +64,7 @@ router.get('/:customerId', (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
   const customer = new Customer({
     _id: mongoose.Types.ObjectId(),
     name: req.body.name,
@@ -88,7 +89,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
-router.patch('/:customerId', (req, res, next) => {
+router.patch('/:customerId', checkAuth, (req, res, next) => {
   const id = req.params.customerId;
   const updateCustomers = {};
   for (const option of req.body) {
@@ -117,7 +118,7 @@ router.patch('/:customerId', (req, res, next) => {
     });
 });
 
-router.delete('/:customerId', (req, res, next) => {
+router.delete('/:customerId', checkAuth, (req, res, next) => {
   const id = req.params.customerId;
   Customer.remove({ _id: id })
     .exec()
